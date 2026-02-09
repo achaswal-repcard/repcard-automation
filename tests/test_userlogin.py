@@ -8,8 +8,9 @@ from pages.login_page import LoginPage
 scenarios("../features/login.feature")
 
 @given("the user is on the login page")
-def open_login_page(page, config):
-    page.goto(f"{config['base_url']}/admin/login")
+def open_login_page(page, config, assert_page_healthy):
+    response = page.goto(f"{config['base_url']}/admin/login")
+    assert_page_healthy(page, response)
 
 
 @when(parsers.parse('the user enters username "{username}"'))

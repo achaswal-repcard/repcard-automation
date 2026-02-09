@@ -20,8 +20,12 @@ def config(env):
 @pytest.fixture(scope="session")
 def browser():
     headless = os.getenv("HEADLESS", "false").lower() in {"1", "true", "yes"}
+    browser_channel = os.getenv("BROWSER_CHANNEL")
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=headless)
+        launch_kwargs = {"headless": headless}
+        if browser_channel:
+            launch_kwargs["channel"] = browser_channel
+        browser = p.chromium.launch(**launch_kwargs)
         yield browser
         browser.close()
 
@@ -30,6 +34,49 @@ def page(browser):
     page = browser.new_page()
     yield page
     page.close()
+
+
+@pytest.fixture
+def assert_page_healthy():
+    """
+    Fail fast when backend/debug error pages are returned instead of app UI.
+    """
+    error_markers = (
+        "cannot redeclare",
+        "fatalerror",
+        "stack trace",
+        "symfony\\component\\errorhandler",
+        "whoops",
+    )
+
+    def _assert(page, response=None):
+        status = response.status if response else None
+        title = ""
+        content = ""
+        try:
+            title = page.title()
+            content = page.content()
+        except Exception:
+            pass
+
+        title_lower = title.lower() if title else ""
+        content_lower = content.lower() if content else ""
+        matched = [m for m in error_markers if m in title_lower or m in content_lower]
+        reasons = []
+
+        if status is not None and status >= 500:
+            reasons.append(f"HTTP {status}")
+        if matched:
+            reasons.append(f"error markers: {', '.join(matched)}")
+
+        if reasons:
+            allure.attach(page.url, name="env_page_url", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(title or "<no title>", name="env_page_title", attachment_type=allure.attachment_type.TEXT)
+            snippet = content[:4000] if content else "<no content>"
+            allure.attach(snippet, name="env_page_snippet", attachment_type=allure.attachment_type.HTML)
+            raise AssertionError(f"QA environment unhealthy on login page ({'; '.join(reasons)})")
+
+    return _assert
 
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
