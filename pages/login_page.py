@@ -50,7 +50,6 @@ class LoginPage:
 
     def verify_login_error(self):
         # Unsuccessful login either shows a server error banner or native validation
-        banner_visible = False
         try:
             self.page.locator(self.error_message).wait_for(state="visible", timeout=5000)
             banner_visible = True
@@ -71,4 +70,4 @@ class LoginPage:
         self.page.locator(self.forgot_password_link).click()
 
     def click_create_account(self):
-         self.page.locator(self.create_account).click()
+        self.page.locator(self.create_account).click()
