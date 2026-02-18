@@ -1,11 +1,11 @@
 import allure
 from pytest_bdd import scenarios, given, when, then, parsers
 
-from pages.login_page import LoginPage
+from pages.web.login_page import LoginPage
 
 
 # Link feature file
-scenarios("../features/login.feature")
+scenarios("login.feature")
 
 @given("the user is on the login page")
 def open_login_page(page, config, assert_page_healthy):

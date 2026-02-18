@@ -5,9 +5,9 @@ __pycache__/
 reports/
 allure-results/
 allure-report/
-features/forgot_password.feature
-features/signup.feature
-pages/forgot_password_page.py
-pages/signup_page.py
-tests/test_forgot_password.py
-tests/test_signup.py
+features/web/forgot_password.feature
+features/web/signup.feature
+pages/web/forgot_password_page.py
+pages/web/signup_page.py
+tests/web/test_forgot_password.py
+tests/web/test_signup.py
