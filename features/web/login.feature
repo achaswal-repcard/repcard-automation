@@ -33,3 +33,4 @@ Feature: Login Functionality
       | invalid credentials   | invaliduser        | wrongpassword  |
       | empty username        | <empty>            | Repcard1$      |
       | empty password        | admin@repcard.com  | <empty>        |
+

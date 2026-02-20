@@ -110,7 +110,10 @@ def pytest_runtest_makereport(item, call):
 def pytest_bdd_before_scenario(request, feature, scenario):
     """
     Map BDD tags (e.g. @negative, @positive, @smoke) into Allure tags.
+    Use business-readable BDD scenario name as the Allure test title.
     """
+    allure.dynamic.title(scenario.name)
+
     tags = set()
     if hasattr(feature, "tags") and feature.tags:
         tags.update(feature.tags)
