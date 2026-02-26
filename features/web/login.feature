@@ -10,15 +10,18 @@ Feature: Login Functionality
 
 
   @smoke @positive
-  Scenario Outline: Successful login with valid credentials
+  Scenario Outline: Successful login with valid credentials for each user type
     When the user enters username "<username>"
     And the user enters password "<password>"
     And the user clicks the login button
     Then the user should be redirected to the home page
 
     Examples:
-      | username           | password   |
-      | admin@repcard.com  | Repcard1$  |
+      | user_type      | username                           | password   |
+      | Admin User     | admin@repcard.com                  | Repcard1$  |
+      | Company User   | ac@mailinator.com                  | Test@123   |
+      | Freemium User  | automationfreemium@mailinator.com  | Test@123   |
+      | Premium User   | automationpremium@mailinator.com   | Test@123   |
 
 
   @negative
@@ -33,4 +36,3 @@ Feature: Login Functionality
       | invalid credentials   | invaliduser        | wrongpassword  |
       | empty username        | <empty>            | Repcard1$      |
       | empty password        | admin@repcard.com  | <empty>        |
-
