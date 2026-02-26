@@ -9,9 +9,3 @@ features/web/signup.feature
 pages/web/signup_page.py
 tests/web/test_signup.py
 tests/web/testdata/signup_data.py
-features/web/account_menu.feature
-features/web/sidebar_navigation.feature
-pages/web/home_page.py
-pages/web/sidebar_page.py
-tests/web/test_account_menu.py
-tests/web/test_sidebar_navigation.py
