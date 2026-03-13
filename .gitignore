@@ -5,7 +5,3 @@ __pycache__/
 reports/
 allure-results/
 allure-report/
-features/web/signup.feature
-pages/web/signup_page.py
-tests/web/test_signup.py
-tests/web/testdata/signup_data.py
